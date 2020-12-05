@@ -1,6 +1,8 @@
-import jwt from "jsonwebtoken";
+var express = require("express");
+var router = express.Router();
+var jwt = require("jsonwebtoken");
 
-export const auth = (req, res, next) => {
+router.use((req, res, next) => {
   const token = req.header("auth-token");
   const jwtSecret = "jwtsecret";
 
@@ -15,4 +17,6 @@ export const auth = (req, res, next) => {
   } catch (e) {
     res.status(400).json({ msg: "Not a valid token for authorization" });
   }
-};
+});
+
+module.exports = router;
