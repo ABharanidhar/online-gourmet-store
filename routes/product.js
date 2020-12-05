@@ -51,7 +51,9 @@ router.route('/update/:id').put((req, res, next) => {
 })
 
 router.route('/delete/:id').delete((req, res, next) => {
-    product.findByIdAndRemove(req.params.id, (error, data) => {
+    product.findByIdAndUpdate(req.params.id, {
+        available: false
+    },(error, data) => {
         if (error) {
             return next(error);
         } else {
