@@ -51,13 +51,28 @@ router.post("/addtocart", auth, function (req, res, next) {
     res.status(200).json({ message: "success" });
   });
 });
-mongoose.set("debug", true);
-router.put("/updateproducts/:cardId", auth, function (req, res, next) {
+
+router.put("/updateproducts/:id", auth, function (req, res, next) {
   const { products } = req.body;
 
-  Cart.findOneAndUpdate(
-    { _id: req.params.cardId },
+  Cart.findByIdAndUpdate(
+    req.params.id,
     { products: products },
+
+    (err, cartDetails) => {
+      if (err) {
+        res.status(500).json({ errorMessage: err });
+      }
+      res.status(200).json(cartDetails);
+    }
+  );
+});
+
+//TODO: delete product from checkout.
+router.put("/removeproduct/:id/:productId", auth, function (req, res, next) {
+  Cart.findByIdAndUpdate(
+    req.params.id,
+    { $pull: { products: { id: req.params.productId } } },
     (err, cartDetails) => {
       if (err) {
         res.status(500).json({ errorMessage: err });
