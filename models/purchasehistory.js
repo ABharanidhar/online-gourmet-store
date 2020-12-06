@@ -15,6 +15,11 @@ const PurchaseHistorySchema = new mongoose.Schema({
     type: Date,
     default: dateformat(new Date(), "yyyy-mm-dd HH:MM:ss"),
   },
+
+  totalPrice: {
+    type: Number,
+    required: "Missing total price",
+  },
 });
 
 const purchaseHistory = mongoose.model(

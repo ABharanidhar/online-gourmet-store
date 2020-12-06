@@ -5,16 +5,17 @@ var mongoose = require("mongoose");
 var cart = require("../models/cart");
 var pHistory = require("../models/purchasehistory");
 var auth = require("../middleware/auth");
+const { log } = require("debug");
 
 const Cart = mongoose.model("Cart", cart.cart);
 
-const PurchaseHistory = mongoose.model(
+const PurchaseHistory2 = mongoose.model(
   "PurchaseHistory",
   pHistory.purchasehistory
 );
 
 router.get("/", auth, function (req, res, next) {
-  Cart.find(
+  Cart.findOne(
     { userId: req.user.id },
     {
       __v: 0,
@@ -26,18 +27,6 @@ router.get("/", auth, function (req, res, next) {
       res.status(200).json(ph);
     }
   );
-});
-
-router.post("/checkout", auth, function (req, res, next) {
-  req.body.userId = req.user.id;
-  let products = new PurchaseHistory(req.body);
-
-  products.save((err) => {
-    if (err) {
-      res.status(500).json({ errorMessage: err });
-    }
-    res.status(200).json({ message: "success" });
-  });
 });
 
 router.post("/addtocart", auth, function (req, res, next) {
@@ -69,7 +58,7 @@ router.put("/updateproducts/:id", auth, function (req, res, next) {
 });
 
 //TODO: delete product from checkout.
-router.put("/removeproduct/:id/:productId", auth, function (req, res, next) {
+router.delete("/removeproduct/:id/:productId", auth, function (req, res, next) {
   Cart.findByIdAndUpdate(
     req.params.id,
     { $pull: { products: { id: req.params.productId } } },
