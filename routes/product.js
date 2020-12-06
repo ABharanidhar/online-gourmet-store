@@ -9,7 +9,7 @@ router.route('/create').post((req, res, next) => {
         if (error) {
             return next(error)
         } else {
-            console.log(data)
+            console.log("api response:",data);
             res.json(data)
         }
     })
