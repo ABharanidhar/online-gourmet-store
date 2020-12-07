@@ -13,6 +13,7 @@ var purchasehistoryRouter = require("./routes/purchasehistory");
 var productsRouter = require("./routes/product");
 
 var app = express();
+// app.use(express.json());
 
 const port = 4000;
 const DB_URI = "mongodb://localhost/online-gourmet";

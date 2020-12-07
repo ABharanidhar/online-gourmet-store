@@ -55,8 +55,9 @@ router.post("/login", function (req, res, next) {
 
 router.post("/register", function (req, res, next) {
   let newUser = new User(req.body);
-
-  User.findOne({ email: newUser.user }, (err, user) => {
+  const { email, user, password } = req.body;
+  console.log(newUser);
+  User.findOne({ email: email }, (err, user) => {
     if (err) {
       console.log("ERROR: Unable to find user email" + err);
       res.status(500).json({ errorMessage: err });
@@ -106,11 +107,5 @@ router.post("/register", function (req, res, next) {
     }
   });
 });
-
-// export const getUserById = (req, res) => {
-//   User.findById(req.user.id)
-//     .select("-password")
-//     .then((user) => res.status(200).json(user));
-// };
 
 module.exports = router;
