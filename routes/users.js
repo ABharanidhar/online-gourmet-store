@@ -5,9 +5,14 @@ var mongoose = require("mongoose");
 var bcrypt = require("bcrypt");
 var jwt = require("jsonwebtoken");
 
+var cart = require("../models/cart");
+
 var user = require("../models/user");
 
 const User = mongoose.model("User", user.user);
+
+const CartInit = mongoose.model("Cart", cart.cart);
+
 const jwtSecret = "jwtsecret";
 
 router.post("/login", function (req, res, next) {
@@ -84,6 +89,14 @@ router.post("/register", function (req, res, next) {
                 if (err) {
                   res.status(203).json({ errorMessage: err });
                 }
+                let cart = new CartInit();
+                cart.userId = user.id;
+                cart.products = [];
+                CartInit.save((err) => {
+                  if(err) {
+                    console.log("Unable to create cart");
+                  }
+                })
                 res.status(200).json({ message: "User registered Sucess!" });
               }
             );
