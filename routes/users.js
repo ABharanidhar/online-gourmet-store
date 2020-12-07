@@ -93,7 +93,7 @@ router.post("/register", function (req, res, next) {
                 let cart = new CartInit();
                 cart.userId = user.id;
                 cart.products = [];
-                CartInit.save((err) => {
+                cart.save((err) => {
                   if(err) {
                     console.log("Unable to create cart");
                   }

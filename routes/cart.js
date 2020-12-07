@@ -72,4 +72,51 @@ router.delete("/removeproduct/:id/:productId", auth, function (req, res, next) {
   );
 });
 
+router.put("/addproduct/:id", auth, function (req, res, next) {
+  console.log("request is:", req.body);
+  Cart.findByIdAndUpdate(
+      req.params.id,
+      { $push: { products: req.body } },
+      (err, cartDetails) => {
+        if (err) {
+          res.status(500).json({ errorMessage: err });
+        }
+        console.log("details", cartDetails);
+        res.status(200).json(cartDetails);
+      }
+  );
+});
+
+router.put("/addproduct/:id", auth, function (req, res, next) {
+  Cart.findByIdAndUpdate(
+      req.params.id,
+      { $push: { products: req.body } },
+      (err, cartDetails) => {
+        if (err) {
+          res.status(500).json({ errorMessage: err });
+        }
+        console.log(cartDetails);
+        res.status(200).json(cartDetails);
+      }
+  );
+});
+
+router.put("/updatequantity/:id", auth, function (req, res, next) {
+  const { product } = req.body;
+  console.log(req.body);
+  Cart.findByIdAndUpdate(
+      req.params.id,
+      {
+        products: req.body,
+      },
+      (err, cartDetails) => {
+        if (err) {
+          res.status(500).json({ errorMessage: err });
+        }
+        console.log(cartDetails);
+        res.status(200).json(cartDetails);
+      }
+  );
+});
+
 module.exports = router;
